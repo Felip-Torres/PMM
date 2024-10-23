@@ -1,4 +1,6 @@
 // Clase Client
+import 'dart:math';
+
 class Client {
   late String DNI, nom, correu, telefon, numTargeta;
 
@@ -29,43 +31,53 @@ class Client {
   }
 }
 
-// Classe abstracta Vehicle
+// Clase abstracta Vehicle
 abstract class Vehicle {
-  bool llogat;
-  late String dniClient, model, marca, matricula;
-  int quilometratge;
+  late String matricula, marca, model, dniClient;
+  bool llogat = false;
+  int quilometratge = 0;
 
-  Vehicle(this.matricula, this.marca, this.model)
-      : llogat = false,
-        quilometratge = 0;
+  Vehicle();
+  Vehicle.matricula(this.matricula);
+  Vehicle.completo(this.matricula, this.marca, this.model);
 
-  void llogar(String dni) {
+  // Metodos get
+  String get getMatricula => matricula;
+  String get getMarca => marca;
+  String get getModel => model;
+  String get getDniClient => dniClient;
+  int get getQuilometratge => quilometratge;
+  bool get estaLlogat => llogat;
+
+  // Metodos set
+  set setMatricula(String matricula) => this.matricula = matricula;
+  set setMarca(String marca) => this.marca = marca;
+  set setModel(String model) => this.model = model;
+  set setDniClient(String dniClient) => this.dniClient = dniClient;
+  set setQuilometratge(int quilometratge) => this.quilometratge = quilometratge;
+  set setLlogat(bool llogat) => this.llogat=llogat;
+
+  void llogar() {
     llogat = true;
-    dniClient = dni;
   }
 
   void retornar() {
     llogat = false;
-    dniClient = null;
   }
-
-  bool estaLlogat() => llogat;
 
   int compareTo(Vehicle other) {
     if (this.runtimeType != other.runtimeType) {
-      throw Exception("No es poden comparar vehicles de tipus diferent.");
+      throw Exception("No se pueden comparar vehicles de tipos diferentes.");
     }
     return this.quilometratge.compareTo(other.quilometratge);
   }
-
-  @override
-  String toString();
 }
 
-// Classe Cotxe
+// Clase Cotxe
 class Cotxe extends Vehicle {
-  Cotxe(String matricula, String marca, String model)
-      : super(matricula, marca, model);
+  Cotxe();
+  Cotxe.matricula(String matricula): super.matricula(matricula);
+  Cotxe.completo(String matricula, String marca, String model): super.completo(matricula, marca, model);
 
   @override
   String toString() {
@@ -73,12 +85,13 @@ class Cotxe extends Vehicle {
   }
 }
 
-// Classe Moto
+// Clase Moto
 class Moto extends Vehicle {
-  int cilindrada;
+  late int cilindrada;
 
-  Moto(String matricula, String marca, String model, this.cilindrada)
-      : super(matricula, marca, model);
+  Moto();
+  Moto.matricula(String matricula): super.matricula(matricula);
+  Moto.completo(String matricula, String marca, String model, this.cilindrada): super.completo(matricula, marca, model);
 
   @override
   String toString() {
@@ -86,61 +99,80 @@ class Moto extends Vehicle {
   }
 }
 
-// Aplicació executable
+// Aplicacion executable
 void main() {
-  // Creació de llistes de cotxes i motos
+  // Creacion de listas de cotxes y motos
   List<Cotxe> cotxes = [];
   List<Moto> motos = [];
 
-  // Creació de 5 cotxes
-  cotxes.add(Cotxe('1234ABC', 'Toyota', 'Corolla'));
-  cotxes.add(Cotxe('5678DEF', 'Honda', 'Civic'));
-  cotxes.add(Cotxe('9101GHI', 'Ford', 'Focus'));
-  cotxes.add(Cotxe('1121JKL', 'Mazda', '3'));
-  cotxes.add(Cotxe('3141MNO', 'Nissan', 'Leaf'));
+  // Creacion de 5 cotxes
+  cotxes.add(Cotxe.completo('1234ABC', 'Toyota', 'Corolla'));
+  cotxes.add(Cotxe.completo('5678DEF', 'Honda', 'Civic'));
+  cotxes.add(Cotxe.completo('9101GHI', 'Ford', 'Focus'));
+  cotxes.add(Cotxe.completo('1121JKL', 'Mazda', '3'));
+  cotxes.add(Cotxe.completo('3141MNO', 'Nissan', 'Leaf'));
 
-  // Creació de 5 motos
-  motos.add(Moto('KLMN123', 'Yamaha', 'YZF-R1', 1000));
-  motos.add(Moto('OPQR456', 'Kawasaki', 'Ninja', 650));
-  motos.add(Moto('STUV789', 'Ducati', 'Panigale', 1100));
-  motos.add(Moto('WXYZ012', 'Suzuki', 'GSX-R', 750));
-  motos.add(Moto('ABCD345', 'BMW', 'S1000RR', 999));
+  // Creacion de 5 motos
+  motos.add(Moto.completo('KLMN123', 'Yamaha', 'YZF-R1', 1000));
+  motos.add(Moto.completo('OPQR456', 'Kawasaki', 'Ninja', 650));
+  motos.add(Moto.completo('STUV789', 'Ducati', 'Panigale', 1100));
+  motos.add(Moto.completo('WXYZ012', 'Suzuki', 'GSX-R', 750));
+  motos.add(Moto.completo('ABCD345', 'BMW', 'S1000RR', 999));
 
-  // Creació de clients
-  Client client1 = Client('12345678A', 'John Doe', 'johndoe@example.com', '123456789', '1111222233334444');
-  Client client2 = Client('87654321B', 'Jane Smith', 'janesmith@example.com', '987654321', '4444333322221111');
+  // Creacion de clients
+  Client client1 = Client.complet('12345678A', 'John Doe', 'johndoe@example.com', '123456789', '1111222233334444');
+  Client client2 = Client.complet('87654321B', 'Jane Smith', 'janesmith@example.com', '987654321', '4444333322221111');
 
-  // Llogar vehicles
-  cotxes[0].llogar(client1.dni);
-  cotxes[2].llogar(client2.dni);
-  motos[1].llogar(client1.dni);
-  motos[3].llogar(client2.dni);
+  //Simulo alquileres
+  cotxes[0].llogar();
+  cotxes[0].setDniClient = client1.getDNI;
+  cotxes[1].llogar();
+  cotxes[1].setDniClient = client1.getDNI;
+  cotxes[2].llogar();
+  cotxes[2].setDniClient = client2.getDNI;
+  motos[0].llogar();
+  motos[0].setDniClient = client2.getDNI;
 
-  // Contar vehicles llogats
-  int cotxesLlogats = cotxes.where((cotxe) => cotxe.estaLlogat()).length;
-  int motosLlogades = motos.where((moto) => moto.estaLlogat()).length;
+  //cuento cotxes alquilados
+  int cont=0;
+  for (Cotxe cotxe in cotxes){
+    if(cotxe.estaLlogat)cont++;
+  }
+  print("Cotxes total: ${cotxes.length} llogat: ${cont}");
 
-  // Mostrar quantitat total de vehicles llogats
-  print('Cotxes llogats: $cotxesLlogats');
-  print('Motos llogades: $motosLlogades');
+  //cuento motos alquiladas
+  cont=0;
+  for (Moto moto in motos){
+    if(moto.estaLlogat)cont++;
+  }
+  print("Motos total: ${motos.length} llogat: ${cont}");
 
-  // Indicar el cotxe i la moto amb més quilòmetres
-  Cotxe? cotxeMesQuilometres;
-  Moto? motoMesQuilometres;
-
-  for (var cotxe in cotxes) {
-    if (cotxe.quilometratge > (cotxeMesQuilometres?.quilometratge ?? -1)) {
-      cotxeMesQuilometres = cotxe;
-    }
+  // Crear una instancia de Random
+  Random random = Random();
+  //Assigno quilometrajes aleatorios a los cotxes
+  for (Cotxe cotxe in cotxes){
+    cotxe.setQuilometratge = random.nextInt(1001);
+  }
+  //Assigno quilometrajes aleatorios a las motos
+  for (Moto moto in motos){
+    moto.setQuilometratge = random.nextInt(1001);
   }
 
-  for (var moto in motos) {
-    if (moto.quilometratge > (motoMesQuilometres?.quilometratge ?? -1)) {
-      motoMesQuilometres = moto;
-    }
+  //cogo el cotxe con mas quilometraje
+  Cotxe cotxeMax=cotxes[0];
+  for(int i=1; i<cotxes.length; i++){
+    if(cotxes[i].getQuilometratge>cotxeMax.getQuilometratge)cotxeMax=cotxes[i];
   }
 
-  // Mostrar informació del cotxe i moto amb més quilòmetres
-  print('Cotxe amb més quilòmetres: ${cotxeMesQuilometres.toString()}');
-  print('Moto amb més quilòmetres: ${motoMesQuilometres.toString()}');
+  //cogo la moto con mas quilometraje
+  Moto motoMax=motos[0];
+  for(int i=1; i<motos.length; i++){
+    if(motos[i].getQuilometratge>motoMax.getQuilometratge)motoMax=motos[i];
+  }
+
+  print("Cotxe con mas quilometros");
+  print(cotxeMax);
+
+  print("\nMoto con mas quilometros");
+  print(motoMax);
 }
