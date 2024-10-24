@@ -1,6 +1,6 @@
-// Clase Client
 import 'dart:math';
 
+// Clase Client
 class Client {
   late String DNI, nom, correu, telefon, numTargeta;
 
@@ -33,7 +33,7 @@ class Client {
 
 // Clase abstracta Vehicle
 abstract class Vehicle {
-  late String matricula, marca, model, dniClient;
+  late String matricula, marca, model, dniClient = "";
   bool llogat = false;
   int quilometratge = 0;
 
@@ -99,7 +99,6 @@ class Moto extends Vehicle {
   }
 }
 
-// Aplicacion executable
 void main() {
   // Creacion de listas de cotxes y motos
   List<Cotxe> cotxes = [];
@@ -133,21 +132,21 @@ void main() {
   motos[0].llogar();
   motos[0].setDniClient = client2.getDNI;
 
-  //cuento cotxes alquilados
+  //Cuento cotxes alquilados
   int cont=0;
   for (Cotxe cotxe in cotxes){
     if(cotxe.estaLlogat)cont++;
   }
   print("Cotxes total: ${cotxes.length} llogat: ${cont}");
 
-  //cuento motos alquiladas
+  //Cuento motos alquiladas
   cont=0;
   for (Moto moto in motos){
     if(moto.estaLlogat)cont++;
   }
   print("Motos total: ${motos.length} llogat: ${cont}");
 
-  // Crear una instancia de Random
+  //Creo una instancia de Random
   Random random = Random();
   //Assigno quilometrajes aleatorios a los cotxes
   for (Cotxe cotxe in cotxes){
@@ -158,13 +157,13 @@ void main() {
     moto.setQuilometratge = random.nextInt(1001);
   }
 
-  //cogo el cotxe con mas quilometraje
+  //Cogo el cotxe con mas quilometraje
   Cotxe cotxeMax=cotxes[0];
   for(int i=1; i<cotxes.length; i++){
     if(cotxes[i].getQuilometratge>cotxeMax.getQuilometratge)cotxeMax=cotxes[i];
   }
 
-  //cogo la moto con mas quilometraje
+  //Cogo la moto con mas quilometraje
   Moto motoMax=motos[0];
   for(int i=1; i<motos.length; i++){
     if(motos[i].getQuilometratge>motoMax.getQuilometratge)motoMax=motos[i];
